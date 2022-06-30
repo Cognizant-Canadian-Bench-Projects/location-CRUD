@@ -9,5 +9,4 @@ class LocationCrudApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

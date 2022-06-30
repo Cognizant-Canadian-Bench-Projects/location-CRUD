@@ -11,12 +11,12 @@ ext {
 group = 'com.cognizant'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
+//
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
 
 repositories {
 	mavenCentral()
@@ -39,6 +39,9 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 	implementation 'junit:junit:4.13.1'
 	implementation 'junit:junit:4.13.1'
+	// https://mvnrepository.com/artifact/org.hsqldb/hsqldb
+	testImplementation group: 'org.hsqldb', name: 'hsqldb', version: '2.0.0'
+
 }
 
 //tasks.named('test') {

@@ -12,12 +12,6 @@ group = 'com.cognizant'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
 	mavenCentral()
 }
@@ -39,22 +33,26 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 	implementation 'junit:junit:4.13.1'
 	implementation 'junit:junit:4.13.1'
+	// https://mvnrepository.com/artifact/org.hsqldb/hsqldb
+	testImplementation group: 'org.hsqldb', name: 'hsqldb', version: '2.0.0'
+
 }
 
-//tasks.named('test') {
-//	useJUnitPlatform()
-//}
+
 // Creating a gradlew test command. We do not want to include testing any IT for this.
 test {
 	exclude '**/*IT.class'
 	useJUnitPlatform()
 }
+
 // Creating a gradlew integrationTest command. We do not want to include testing any unit tests for this.
 task integrationTest(type: Test) {
 	exclude '**/*Test.class'
 	useJUnitPlatform()
 }
+
 apply plugin: "io.spring.dependency-management"
+
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"

@@ -1,0 +1,30 @@
+package com.congnizant.locationCRUD.controller;
+
+import com.congnizant.locationCRUD.models.Location;
+import com.congnizant.locationCRUD.service.LocationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.persistence.EntityNotFoundException;
+
+@RestController
+@CrossOrigin(originPatterns = "*", exposedHeaders = "*",allowedHeaders = "*")
+public class LocationController {
+    @Autowired
+    LocationService locationService;
+
+    @GetMapping("/locations")
+    public ResponseEntity<?> getLocation(@RequestParam String name){
+        try{
+            Location location=locationService.findByName(name);
+            return  ResponseEntity.ok(location);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+}

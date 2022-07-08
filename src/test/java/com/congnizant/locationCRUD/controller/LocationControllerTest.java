@@ -53,4 +53,21 @@ class LocationControllerTest {
         ResponseEntity actual=locationController.getLocation("scarborough");
         assertThat(actual.getStatusCodeValue()).isEqualTo(404);
     }
+
+    @Test
+    void  getLocationById_Positive(){
+        when(locationService.findById(1)).thenReturn(location1);
+
+        ResponseEntity actual =locationController.getLocation(1);
+        assertThat(actual.getStatusCodeValue()).isEqualTo(200);
+        assertThat(actual.getBody()).isEqualTo(location1);
+    }
+
+    @Test
+    void getLocationById_Negative(){
+        when(locationService.findById(1)).thenThrow(EntityNotFoundException.class);
+
+        ResponseEntity actual=locationController.getLocation(1);
+        assertThat(actual.getStatusCodeValue()).isEqualTo(404);
+    }
 }

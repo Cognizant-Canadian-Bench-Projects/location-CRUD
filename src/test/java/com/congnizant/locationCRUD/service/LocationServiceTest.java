@@ -13,6 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -45,7 +47,6 @@ class LocationServiceTest {
     @Test
     void findByName_Positive() {
         when(locationRepository.findByName("toronto")).thenReturn(location1);
-
         Location actual=locationService.findByName("toronto");
         assertThat(actual).isEqualTo(location1);
     }
@@ -54,6 +55,20 @@ class LocationServiceTest {
     void findByName_Negative(){
         Assertions.assertThrows(EntityNotFoundException.class,() -> {
             locationService.findByName("");
+        });
+    }
+
+  @Test
+  void findById_Positive() {
+      when(locationRepository.findById(1)).thenReturn(Optional.of(location1));
+      Location actual=locationService.findById(1);
+      assertThat(actual).isEqualTo(location1);
+  }
+
+    @Test
+    void findById_Negative(){
+        Assertions.assertThrows(EntityNotFoundException.class,() -> {
+            locationService.findById(1);
         });
     }
 }

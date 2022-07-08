@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
+import javax.websocket.server.PathParam;
 
 @RestController
 @CrossOrigin(originPatterns = "*", exposedHeaders = "*",allowedHeaders = "*")
@@ -27,4 +28,13 @@ public class LocationController {
         }
     }
 
+    @GetMapping("/locations/{id}")
+    public ResponseEntity<?> getLocation(@PathParam("id") int id){
+        try{
+            Location location=locationService.findById(id);
+            return  ResponseEntity.ok(location);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
 }

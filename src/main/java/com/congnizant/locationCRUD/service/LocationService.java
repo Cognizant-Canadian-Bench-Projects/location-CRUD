@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Service
 public class LocationService {
@@ -18,5 +19,13 @@ public class LocationService {
             throw new EntityNotFoundException(name + " does not exist");
         }
         return location;
+    }
+
+    public Location findById(int id){
+        Optional<Location> location=locationRepository.findById(id);
+        if(!location.isPresent()){
+            throw new EntityNotFoundException("location with id "+ id + " does not exist");
+        }
+        return location.get();
     }
 }

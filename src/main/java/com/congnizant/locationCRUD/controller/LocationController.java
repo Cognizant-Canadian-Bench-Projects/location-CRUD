@@ -4,10 +4,7 @@ import com.congnizant.locationCRUD.models.Location;
 import com.congnizant.locationCRUD.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.websocket.server.PathParam;
@@ -29,7 +26,7 @@ public class LocationController {
     }
 
     @GetMapping("/locations/{id}")
-    public ResponseEntity<?> getLocation(@PathParam("id") int id){
+    public ResponseEntity<?> getLocation(@PathVariable("id") int id){
         try{
             Location location=locationService.findById(id);
             return  ResponseEntity.ok(location);

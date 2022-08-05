@@ -18,6 +18,7 @@ public class LocationService {
         if(location == null){
             throw new EntityNotFoundException(name + " does not exist");
         }
+        System.out.println("call the database");
         return location;
     }
 
@@ -26,6 +27,7 @@ public class LocationService {
         if(!location.isPresent()){
             throw new EntityNotFoundException("location with id "+ id + " does not exist");
         }
+        System.out.println("call the database");
         return location.get();
     }
 }

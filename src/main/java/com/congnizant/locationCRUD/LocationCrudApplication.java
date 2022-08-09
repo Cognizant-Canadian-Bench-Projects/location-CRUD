@@ -8,8 +8,8 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class LocationCrudApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LocationCrudApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LocationCrudApplication.class, args);
+    }
 
 }

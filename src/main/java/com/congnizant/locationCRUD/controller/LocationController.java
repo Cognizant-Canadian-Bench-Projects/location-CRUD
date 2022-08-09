@@ -17,6 +17,7 @@ public class LocationController {
     LocationService locationService;
 
     @GetMapping("/locations")
+    @Cacheable(value = "locations")
     public ResponseEntity<?> getLocation(@RequestParam(required=false) String name) {
         try {
             if (name == null || name.equals("")) {
@@ -33,6 +34,7 @@ public class LocationController {
     }
 
     @GetMapping("/locations/{id}")
+    @Cacheable(value = "locations", key = "#id")
     public ResponseEntity<?> getLocation(@PathVariable("id") int id) {
         try {
             Location location = locationService.findById(id);
@@ -42,12 +44,12 @@ public class LocationController {
         }
     }
 
-    @GetMapping("/locations/zipcodes")
-    public ResponseEntity<?> getAllZipcodes() {
-        try {
-           return ResponseEntity.ok(locationService.getAllZipcodes());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
-    }
+//    @GetMapping("/locations/zipcodes")
+//    public ResponseEntity<?> getAllZipcodes() {
+//        try {
+//           return ResponseEntity.ok(locationService.getAllZipcodes());
+//        } catch (EntityNotFoundException e) {
+//            return ResponseEntity.status(404).body(e.getMessage());
+//        }
+//    }
 }

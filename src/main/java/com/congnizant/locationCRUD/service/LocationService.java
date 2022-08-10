@@ -1,9 +1,12 @@
 package com.congnizant.locationCRUD.service;
 
 import com.congnizant.locationCRUD.dao.LocationRepository;
+import com.congnizant.locationCRUD.models.GeonameData;
 import com.congnizant.locationCRUD.models.Location;
+import com.congnizant.locationCRUD.models.ResponseGeoNameData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -36,12 +39,29 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public List<String> getAllZipcodes() {
-        List<String> allZipcode = locationRepository.findAllZipcodes();
-        if (allZipcode.isEmpty()) {
-            throw new EntityNotFoundException("Error");
-        }
-        System.out.println(allZipcode);
-        return allZipcode;
+//    public List<String> getAllZipcodes() {
+//        List<String> allZipcode = locationRepository.findAllZipcodes();
+//        if (allZipcode.isEmpty()) {
+//            throw new EntityNotFoundException("Error");
+//        }
+//        System.out.println(allZipcode);
+//        return allZipcode;
+//    }
+    public List<Location> addDistances(ResponseGeoNameData responseGeoNameData){
+       List<Location> locations= this.getAllLocations();
+//       locations.stream().filter(location -> responseGeoNameData.getPostalCodes().contains(location.getZipcode()))
+        responseGeoNameData.getPostalCodes().stream().filter(geonameData -> locations.stream().anyMatch(location -> location.getZipcode().equals(geonameData.getPostalCode()))).forEach(geonameData ->
+                        locations.stream().flatMap(location -> {
+                            if(location.getZipcode().equals(geonameData.getPostalCode())){
+                                location.setDistance(geonameData.getDistance());
+                            }
+                            return  null;
+                        })
+                );
+        System.out.println(locations);
+        return  null;
+
+
     }
+
 }

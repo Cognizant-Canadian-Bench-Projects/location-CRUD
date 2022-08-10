@@ -22,4 +22,7 @@ public class Location {
     @Column(name = "location_zipcode", length = 50)
     private String zipcode;
 
+    @Transient
+    private double distance;
+
 }

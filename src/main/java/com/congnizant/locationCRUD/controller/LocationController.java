@@ -1,14 +1,20 @@
 package com.congnizant.locationCRUD.controller;
 
+import com.congnizant.locationCRUD.models.GeonameData;
 import com.congnizant.locationCRUD.models.Location;
+import com.congnizant.locationCRUD.models.ResponseGeoNameData;
 import com.congnizant.locationCRUD.service.LocationService;
 import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @CrossOrigin(originPatterns = "*", exposedHeaders = "*", allowedHeaders = "*")
@@ -42,6 +48,19 @@ public class LocationController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
+    }
+    @GetMapping("/geoname")
+    public ResponseEntity<?> getZipcodes(@RequestParam String zipcode,@RequestParam String country ,@RequestParam int radius){
+        String url="http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+
+                zipcode+"&country="+
+                country+"&radius="+
+                radius+"&username=deepakAgarwal";
+        RestTemplate restTemplate=new RestTemplate();
+          ResponseGeoNameData geonameData = restTemplate.getForObject(url,ResponseGeoNameData.class);
+          locationService.addDistances(geonameData);
+          return ResponseEntity.ok(geonameData);
+
+
     }
 
 //    @GetMapping("/locations/zipcodes")

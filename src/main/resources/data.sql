@@ -1,6 +1,12 @@
 INSERT INTO location(location_name,location_zipcode)
 VALUES('TORONTO','M1P 3T1'),
+('BRAMPTON','M1P 3T3'),
+('MISSISAGUA','M3J 2V1'),
+('VAUGHN','P0J 1C0'),
+('PARIS','N3L 0A4'),
+('LONDON','N5P 0C1'),
+('MILTON','L0P 1J0'),
+('HAMILTON','L0R 0A5'),
 ('NORTHYORK','M1P 3T2'),
 ('MALTON','M1P 3W3'),
-('BRAMPTON','M1P 3T3'),
-('MISSISAGUA','M3J 2V1');
+('NORTH YORK','M3J 3S1');

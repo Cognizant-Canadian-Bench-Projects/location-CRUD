@@ -8,14 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GeonameData {
-
-//    private String adminCode1;
-//    private double lng;
     private double distance;
-//    private String countryCode;
     private String postalCode;
-//    private String adminName1;
-//    private String placeName;
-//    private double lat;
-
 }

@@ -38,28 +38,19 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    //    public List<String> getAllZipcodes() {
-//        List<String> allZipcode = locationRepository.findAllZipcodes();
-//        if (allZipcode.isEmpty()) {
-//            throw new EntityNotFoundException("Error");
-//        }
-//        System.out.println(allZipcode);
-//        return allZipcode;
-//    }
     public List<Location> addDistances(ResponseGeoNameData responseGeoNameData) {
         List<Location> locations = this.getAllLocations();
-        List<Location> updatedLocations = new ArrayList<>();
-        locations.stream().forEach(location ->
-                responseGeoNameData.getPostalCodes().stream().filter(geoNameData ->
-                        location.getZipcode().equals(geoNameData.getPostalCode())
-                ).forEach(geoNameData -> {
-                            location.setDistance(geoNameData.getDistance());
-                            updatedLocations.add(location);
-                        }
-                )
-        );
-        System.out.println(updatedLocations);
-        return updatedLocations;
-    }
 
+        responseGeoNameData.getPostalCodes().forEach(geoNameData -> {
+            locations.stream().filter(location -> location.getZipcode().equals(geoNameData.getPostalCode()))
+                .forEach(location -> {
+                    if(geoNameData.getDistance() == 0){
+                        location.setDistance(0.0001);
+                    }else{
+                        location.setDistance(geoNameData.getDistance());
+                    }
+            });
+        });
+        return locations;
+    }
 }

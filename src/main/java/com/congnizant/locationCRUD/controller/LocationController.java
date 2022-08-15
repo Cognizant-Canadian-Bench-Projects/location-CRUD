@@ -53,20 +53,6 @@ public class LocationController {
         radius + "&username=deepakAgarwal";
     RestTemplate restTemplate = new RestTemplate();
     ResponseGeoNameData geonameData = restTemplate.getForObject(url, ResponseGeoNameData.class);
-    geonameData.getPostalCodes().forEach(data -> {
-      if(data.getDistance() == 0){
-        data.setDistance(0.00001);
-      }
-    });
     return ResponseEntity.ok(locationService.addDistances(geonameData));
   }
-
-//    @GetMapping("/locations/zipcodes")
-//    public ResponseEntity<?> getAllZipcodes() {
-//        try {
-//           return ResponseEntity.ok(locationService.getAllZipcodes());
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.status(404).body(e.getMessage());
-//        }
-//    }
 }

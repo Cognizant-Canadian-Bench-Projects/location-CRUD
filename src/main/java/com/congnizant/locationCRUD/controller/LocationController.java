@@ -5,11 +5,17 @@ import com.congnizant.locationCRUD.models.ResponseGeoNameData;
 import com.congnizant.locationCRUD.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.SQLException;
 
 @RestController
 @CrossOrigin(originPatterns = "*", exposedHeaders = "*", allowedHeaders = "*")
@@ -46,6 +52,8 @@ public class LocationController {
   }
 
   @GetMapping("/geoname")
+  @Retryable(maxAttempts = 3,value = RestClientException.class, backoff = @Backoff(delay = 500, multiplier = 2))
+
   public ResponseEntity<?> getZipcodes(@RequestParam String zipcode, @RequestParam String country, @RequestParam int radius) {
     String url = "http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=" +
         zipcode + "&country=" +
@@ -53,6 +61,11 @@ public class LocationController {
         radius + "&username=deepakAgarwal";
     RestTemplate restTemplate = new RestTemplate();
     ResponseGeoNameData geonameData = restTemplate.getForObject(url, ResponseGeoNameData.class);
+
     return ResponseEntity.ok(locationService.addDistances(geonameData));
+  }
+  @Recover
+  public ResponseEntity<String> geonameRecovery(Exception e){
+    return new ResponseEntity<String>(e.getMessage() ,HttpStatus.INTERNAL_SERVER_ERROR );
   }
 }
